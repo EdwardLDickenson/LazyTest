@@ -32,6 +32,15 @@ public:
 
 	template<class T> void addAssertion(Assert<T> assertion);
 	void run();
+	
+	template<class T> void equal(T x, T y);
+	template<class T> void unequal(T x, T y);
+	template<class T> void lessThan(T x, T y);
+	template<class T> void greaterThan(T x, T y);
+	template<class T> void lessThanEqual(T x, T y);
+	template<class T> void greatherThanEqual(T x, T y);
+	template<class T> void isNull(T x, T y);
+	template<class T> void notNull(T x, T y);
 
 	bool passed();
 	bool failed();
@@ -50,7 +59,7 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 
 	vector<function<bool(T, T)>> test;
 
-	if (assertion.getType() == '=')
+	if (assertion.getType() == "=")
 	{
 		function<bool()> func = [=]() {
 			return a == b;
@@ -61,10 +70,10 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 		//comparisons.push_back(assertion.getComparison());
 	}
 
-	else if (assertion.getType() == '!')
+	else if (assertion.getType() == "!")
 	{
 		function<bool()> func = [=]() {
-			return a == b;
+			return a == b;	//	Should be != ??????
 		};
 
 		assertions.push_back(func);
@@ -221,6 +230,24 @@ vector<string> TestGroup::getComparisons()
 {
 	return comparisons;
 }
+
+template<class T> 
+void TestGroup::equal(T x, T y)
+{
+	Assert<T> comparison("", x, y);
+	comparison.equal();
+	addAssertion(comparison);
+}
+
+template<class T> 
+void TestGroup::unequal(T x, T y)
+{
+	Assert<T> comparison("", x, y);
+	comparison.unequal();
+	addAssertion(comparison);
+}
+
+
 
 #endif	//	TESTGROUP_HPP
 

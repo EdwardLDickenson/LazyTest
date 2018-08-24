@@ -16,7 +16,7 @@ private:
 	T a;
 	T b;
 	bool canCompare;
-	char compareType;
+	string compareType;
 	string errmsg;
 
 public:
@@ -25,16 +25,33 @@ public:
 
 	void equal();
 	void unequal();
+	void lessThan();
+	void greaterThan();
+	void lessThanEqual();
+	void greaterThanEqual();
+	void isNull();
+	void notNull();
 
 	bool passed();
 	bool failed();
 	bool getResult();
-	char getType();
+	string getType();
 
 	string getMessage();
 	string getComparison();
 	T getA();
 	T getB();
+};
+
+enum Comparator {
+	equal,
+	unequal,
+	lesserThan,
+	greaterThan,
+	lessThanEqual,
+	greaterThanEqual,
+	isNull,
+	notNull
 };
 
 template<class T> Assert<T>::Assert(string msg, T x, T y)
@@ -59,6 +76,42 @@ template<class T> void Assert<T>::unequal()
 	canCompare = true;
 }
 
+template<class T> void Assert<T>::lessThan()
+{
+	compareType = '<';
+	canCompare = true;
+}
+
+template<class T> void Assert<T>::greaterThan()
+{
+	compareType = '>';
+	canCompare = true;
+}
+
+template<class T> void Assert<T>::greaterThanEqual()
+{
+	compareType = ">=";
+	canCompare = true;
+}
+
+template<class T> void Assert<T>::lessThanEqual()
+{
+	compareType = "<=";
+	canCompare = true;
+}
+
+template<class T> void Assert<T>::isNull()
+{
+	compareType = "Ø";
+	canCompare = true;
+}
+
+template<class T> void Assert<T>::notNull()
+{
+	compareType = "!Ø";
+	canCompare = true;
+}
+
 template<class T> bool Assert<T>::getResult()
 {
 	if (compareType == '=')
@@ -69,6 +122,36 @@ template<class T> bool Assert<T>::getResult()
 	if (compareType == '!')
 	{
 		return a != b;
+	}
+
+	if (compareType == '<')
+	{
+		return a < b;
+	}
+
+	if (compareType == '>')
+	{
+		return a > b;
+	}
+
+	if (compareType == "<=")
+	{
+		return a <= b;
+	}
+
+	if (compareType == ">=")
+	{
+		return a >= b;
+	}
+
+	if (compareType == "Ø")
+	{
+		return a == NULL;
+	}
+
+	if (compareType == "!Ø")
+	{
+		return a != NULL;
 	}
 }
 
@@ -97,7 +180,7 @@ template<class T> string Assert<T>::getMessage()
 	return errmsg;
 }
 
-template<class T> char Assert<T>::getType()
+template<class T> string Assert<T>::getType()
 {
 	if (!canCompare)
 	{
@@ -111,7 +194,7 @@ template<class T> string Assert<T>::getComparison()
 {
 	stringstream result;
 
-	//cout << a << endl;
+	cout << a << endl;
 
 	result << "(\"";
 	result << a;
