@@ -4,6 +4,7 @@
 #define TESTGROUP_HPP
 
 #include "TestSuite_deps.hpp"
+#include "Comparator.hpp"
 
 class TestGroup
 {
@@ -58,30 +59,76 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 	T b = assertion.getB();
 	vector<function<bool(T, T)>> test;
 
-	cout << "Type: " << assertion.getType() << endl;
-	if (assertion.getType() == "=")
+	switch (assertion.getType())
 	{
-		function<bool()> func = [=]() {
-			return a == b;
-		};
+		case Comparator::equal:
+		{
+			function<bool()> equalFunc = [=]() {
+				return a == b;
+			};
 
-		assertions.push_back(func);
-		//messages.push_back(assertion.getMessage());
-		//comparisons.push_back(assertion.getComparison());
+			assertions.push_back(equalFunc);
+			//messages.push_back(assertion.getMessage());
+			//comparisons.push_back(assertion.getComparison());
+		}
+		break;
+		case Comparator::unequal:
+		{
+			function<bool()> unequalFunc = [=]() {
+				return a != b;
+			};
+
+			assertions.push_back(unequalFunc);
+			//messages.push_back(assertion.getMessage());
+			//comparisons.push_back(assertion.getComparison());
+		}
+		break;
+		case Comparator::lessThan:
+		{
+			function<bool()> lessThanFunc = [=]() {
+				return a < b;
+			};
+
+			assertions.push_back(lessThanFunc);
+			//messages.push_back(assertion.getMessage());
+			//comparisons.push_back(assertion.getComparison());
+		}
+		break;
+		case Comparator::greaterThan:
+		{
+			function<bool()> greaterThanFunc = [=]() {
+				return a > b;
+			};
+
+			assertions.push_back(greaterThanFunc);
+			//messages.push_back(assertion.getMessage());
+			//comparisons.push_back(assertion.getComparison());
+		}
+		break;
+		case Comparator::lessThanEqual:
+		{
+			function<bool()> lessThanEqualFunc = [=]() {
+				return a <= b;
+			};
+
+			assertions.push_back(lessThanEqualFunc);
+			//messages.push_back(assertion.getMessage());
+			//comparisons.push_back(assertion.getComparison());
+		}
+		break;
+		case Comparator::greaterThanEqual:
+		{
+			function<bool()> greaterThanEqualFunc = [=]() {
+				return a >= b;
+			};
+
+			assertions.push_back(greaterThanEqualFunc);
+			//messages.push_back(assertion.getMessage());
+			//comparisons.push_back(assertion.getComparison());
+		}
+		break;
 	}
 
-	else if (assertion.getType() == "!=")
-	{
-		function<bool()> func = [=]() {
-			return a != b;	//	Should be != ??????
-		};
-
-		assertions.push_back(func);
-		//messages.push_back(assertion.getMessage());
-		//comparisons.push_back(assertion.getComparison());
-	}
-
-	//cout << assertion.getComparison() << endl;
 	messages.push_back(assertion.getMessage());
 	comparisons.push_back(assertion.getComparison());
 }
