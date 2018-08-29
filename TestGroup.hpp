@@ -56,9 +56,9 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 {
 	T a = assertion.getA();
 	T b = assertion.getB();
-
 	vector<function<bool(T, T)>> test;
 
+	cout << "Type: " << assertion.getType() << endl;
 	if (assertion.getType() == "=")
 	{
 		function<bool()> func = [=]() {
@@ -70,10 +70,10 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 		//comparisons.push_back(assertion.getComparison());
 	}
 
-	else if (assertion.getType() == "!")
+	else if (assertion.getType() == "!=")
 	{
 		function<bool()> func = [=]() {
-			return a == b;	//	Should be != ??????
+			return a != b;	//	Should be != ??????
 		};
 
 		assertions.push_back(func);

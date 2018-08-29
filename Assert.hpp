@@ -9,6 +9,17 @@
 //===	Definition	============================================================
 //==============================================================================
 
+enum Comparator {
+	equal,
+	unequal,
+	lessThan,
+	greaterThan,
+	lessThanEqual,
+	greaterThanEqual,
+	isNull,
+	notNull
+};
+
 template<class T> class Assert
 {
 private:
@@ -16,7 +27,9 @@ private:
 	T a;
 	T b;
 	bool canCompare;
-	string compareType;
+	//string compareType;
+	Comparator compareType;
+
 	string errmsg;
 
 public:
@@ -43,21 +56,10 @@ public:
 	T getB();
 };
 
-enum Comparator {
-	equal,
-	unequal,
-	lesserThan,
-	greaterThan,
-	lessThanEqual,
-	greaterThanEqual,
-	isNull,
-	notNull
-};
-
 template<class T> Assert<T>::Assert(string msg, T x, T y)
 {
 	canCompare = false;
-	compareType = '?';
+	//compareType = '?';
 	errmsg = msg;
 
 	a = x;
@@ -66,90 +68,90 @@ template<class T> Assert<T>::Assert(string msg, T x, T y)
 
 template<class T> void Assert<T>::equal()
 {
-	compareType = '=';
+	compareType = Comparator::equal;
 	canCompare = true;
 }
 
 template<class T> void Assert<T>::unequal()
 {
-	compareType = '!';
+	compareType = Comparator::unequal;
 	canCompare = true;
 }
 
 template<class T> void Assert<T>::lessThan()
 {
-	compareType = '<';
+	compareType = Comparator::lessThan;
 	canCompare = true;
 }
 
 template<class T> void Assert<T>::greaterThan()
 {
-	compareType = '>';
-	canCompare = true;
-}
-
-template<class T> void Assert<T>::greaterThanEqual()
-{
-	compareType = ">=";
+	compareType = Comparator::greaterThan;
 	canCompare = true;
 }
 
 template<class T> void Assert<T>::lessThanEqual()
 {
-	compareType = "<=";
+	compareType = Comparator::lessThanEqual;
+	canCompare = true;
+}
+
+template<class T> void Assert<T>::greaterThanEqual()
+{
+	compareType = Comparator::greaterThanEqual;
 	canCompare = true;
 }
 
 template<class T> void Assert<T>::isNull()
 {
-	compareType = "Ø";
+	compareType = Comparator::isNull;
 	canCompare = true;
 }
 
 template<class T> void Assert<T>::notNull()
 {
-	compareType = "!Ø";
+	compareType = Comparator::notNull;
 	canCompare = true;
 }
 
 template<class T> bool Assert<T>::getResult()
 {
-	if (compareType == '=')
+	if (compareType == Comparator::equal)
 	{
 		return a == b;
 	}
 
-	if (compareType == '!')
+	if (compareType == Comparator::unequal)
 	{
 		return a != b;
 	}
 
-	if (compareType == '<')
+	if (compareType == Comparator::lessThan)
 	{
 		return a < b;
 	}
 
-	if (compareType == '>')
+	if (compareType == Comparator::greaterThan)
 	{
 		return a > b;
 	}
 
-	if (compareType == "<=")
+	if (compareType == Comparator::lessThanEqual)
 	{
 		return a <= b;
 	}
 
-	if (compareType == ">=")
+	if (compareType == Comparator::greaterThanEqual)
 	{
 		return a >= b;
 	}
 
-	if (compareType == "Ø")
+	if (compareType == Comparator::isNull)
 	{
 		return a == NULL;
 	}
 
-	if (compareType == "!Ø")
+	if (compareType == Comparator::notNull)
 	{
 		return a != NULL;
 	}
@@ -187,7 +189,37 @@ template<class T> string Assert<T>::getType()
 		throw 0;
 	}
 
-	return compareType;
+	string cmp;
+
+	switch(compareType)
+	{
+		case Comparator::equal:
+			cmp = "=";
+		break;
+		case::Comparator::unequal:
+			cmp = "!=";
+		break;
+		case::Comparator::lessThan:
+			cmp = "<";
+		break;
+		case::Comparator::greaterThan:
+			cmp = "";
+		break;
+		case::Comparator::lessThanEqual:
+			cmp = "<=";
+		break;
+		case::Comparator::greaterThanEqual:
+			cmp = ">=";
+		break;
+		case::Comparator::isNull:
+			cmp = "Ø";
+		break;
+		case::Comparator::notNull:
+			cmp = "!Ø";
+		break;
+	}
+
+	return cmp;
 }
 
 template<class T> string Assert<T>::getComparison()
@@ -199,7 +231,7 @@ template<class T> string Assert<T>::getComparison()
 	result << "(\"";
 	result << a;
 	result << "\"";
-	result << compareType;
+	result << getType();
 	result << "\"";
 	result << b;
 	result << "\")";
