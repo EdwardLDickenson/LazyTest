@@ -13,6 +13,7 @@ enum Comparator {
 	greaterThan,
 	lessThanEqual,
 	greaterThanEqual
+	//isType
 };
 
 string getComparatorString(Comparator compareType)
@@ -20,7 +21,7 @@ string getComparatorString(Comparator compareType)
 	switch(compareType)
 	{
 		case Comparator::equal:
-			return "=";
+			return "==";
 		break;
 		case::Comparator::unequal:
 			return "!=";
@@ -29,7 +30,7 @@ string getComparatorString(Comparator compareType)
 			return "<";
 		break;
 		case::Comparator::greaterThan:
-			return "";
+			return ">";
 		break;
 		case::Comparator::lessThanEqual:
 			return "<=";
@@ -50,7 +51,7 @@ string getComparatorString(Comparator compareType)
 
 
 
-//
+//	TODO:
 //
 //
 //

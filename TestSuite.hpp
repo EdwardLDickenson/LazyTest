@@ -3,7 +3,7 @@
 #ifndef TESTSUITE_HPP
 #define TESTSUITE_HPP
 
-#include "TestSuite_deps.hpp"
+#include "TestSuiteDeps.hpp"
 #include "TestGroup.hpp"
 
 class TestSuite
@@ -50,17 +50,9 @@ void TestSuite::write()
 		vector<string> messageList = groups[i].getFailedMessages();
 		vector<string> comparisonList = groups[i].getFailedComparisons();
 
-		//for(size_t j = 0; j < messageList.size(); ++j)
-		//{
-		//	cout << messageList[i] << endl;
-		//	cout << comparisonList[i] << endl;
-		//}
-
 		for (size_t j = 0; j < messageList.size(); ++j)
 		{
-			//cout << groups[i].getComparisons()[j] << endl;
-			//output << messageList[j] << "," <<  to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << "," << groups[i].getComparisons()[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
-			output << messageList[j] << "," << to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << "," << comparisonList[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
+			output << "\"" + messageList[j] + "\"" << "," << to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << "," << comparisonList[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
 		}
 
 		if (messageList.size() == 0)

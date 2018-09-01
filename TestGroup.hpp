@@ -3,7 +3,7 @@
 #ifndef TESTGROUP_HPP
 #define TESTGROUP_HPP
 
-#include "TestSuite_deps.hpp"
+#include "TestSuiteDeps.hpp"
 #include "Comparator.hpp"
 
 class TestGroup
@@ -20,6 +20,8 @@ private:
 	size_t nfailed;
 	bool passedAllTests;
 	bool executed;
+
+	string defaultMessage;
 
 public:
 	TestGroup(string name);
@@ -39,9 +41,9 @@ public:
 	template<class T> void lessThan(T x, T y);
 	template<class T> void greaterThan(T x, T y);
 	template<class T> void lessThanEqual(T x, T y);
-	template<class T> void greatherThanEqual(T x, T y);
-	template<class T> void isNull(T x, T y);
-	template<class T> void notNull(T x, T y);
+	template<class T> void greaterThanEqual(T x, T y);
+	template<class T> void isNULL(T x);
+	template<class T> void notNULL(T x);
 
 	bool passed();
 	bool failed();
@@ -52,6 +54,15 @@ public:
 	vector<string> getFailedComparisons();
 	vector<string> getComparisons();
 };
+
+TestGroup::TestGroup(string name)
+{
+	groupName = name;
+	nfailed = 0;
+	passedAllTests = true;
+	executed = false;
+	defaultMessage = "No specified error message";
+}
 
 template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 {
@@ -131,14 +142,6 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 
 	messages.push_back(assertion.getMessage());
 	comparisons.push_back(assertion.getComparison());
-}
-
-TestGroup::TestGroup(string name)
-{
-	groupName = name;
-	nfailed = 0;
-	passedAllTests = true;
-	executed = false;
 }
 
 size_t TestGroup::getSize()
@@ -221,7 +224,7 @@ bool TestGroup::failed()
 {
 	if (assertions.size() == 0)
 	{
-		throw 0;
+		throw "Emptry set";
 	}
 
 	if (!executed)
@@ -281,7 +284,7 @@ vector<string> TestGroup::getComparisons()
 template<class T> 
 void TestGroup::equal(T x, T y)
 {
-	Assert<T> comparison("", x, y);
+	Assert<T> comparison(defaultMessage, x, y);
 	comparison.equal();
 	addAssertion(comparison);
 }
@@ -289,18 +292,62 @@ void TestGroup::equal(T x, T y)
 template<class T> 
 void TestGroup::unequal(T x, T y)
 {
-	Assert<T> comparison("", x, y);
+	Assert<T> comparison(defaultMessage, x, y);
 	comparison.unequal();
 	addAssertion(comparison);
 }
 
+template<class T>
+void TestGroup::lessThan(T x, T y)
+{
+	Assert<T> comparison(defaultMessage, x, y);
+	comparison.lessThan();
+	addAssertion(comparison);
+}
 
+template<class T>
+void TestGroup::greaterThan(T x, T y)
+{
+	Assert<T> comparison(defaultMessage, x, y);
+	comparison.greaterThan();
+	addAssertion(comparison);
+}
+
+template<class T>
+void TestGroup::lessThanEqual(T x, T y)
+{
+	Assert<T> comparison(defaultMessage, x, y);
+	comparison.lessThanEqual();
+	addAssertion(comparison);
+}
+
+template<class T>
+void TestGroup::greaterThanEqual(T x, T y)
+{
+	Assert<T> comparison(defaultMessage, x, y);
+	comparison.greaterThanEqual();
+	addAssertion(comparison);
+}
+
+template<class T>
+void TestGroup::isNULL(T x)
+{
+
+}
+
+template<class T>
+void TestGroup::notNULL(T x)
+{
+
+}
 
 #endif	//	TESTGROUP_HPP
 
 
 
 //	TODO:
+//
+//	Evaluations should be inside of try/catch blocks
 //
 //
 //

@@ -3,7 +3,7 @@
 #ifndef ASSERT_HPP
 #define ASSERT_HPP
 
-#include "TestSuite_deps.hpp"
+#include "TestSuiteDeps.hpp"
 #include "Comparator.hpp"
 
 //==============================================================================
@@ -13,16 +13,16 @@
 template<class T> class Assert
 {
 private:
-
 	T a;
 	T b;
 	bool canCompare;
+	bool passes;
+	bool fails;
 	Comparator compareType;
 
 	string errmsg;
 
 public:
-
 	Assert(string msg, T x, T y);
 
 	void equal();
@@ -48,6 +48,8 @@ public:
 template<class T> Assert<T>::Assert(string msg, T x, T y)
 {
 	canCompare = false;
+	passes = false;
+	fails = true;
 	errmsg = msg;
 
 	a = x;
@@ -107,30 +109,33 @@ template<class T> bool Assert<T>::getResult()
 	switch(compareType)
 	{
 		case compareType == Comparator::equal:
-			return a == b;
+			passes = a == b;
 		break;
 		case compareType == Comparator::unequal:
-			return a != b;
+			passes = a != b;
 		break;
 		case compareType == Comparator::lessThan:
-			return a < b;
+			passes = a < b;
 		break;
 		case compareType == Comparator::greaterThan:
-			return a > b;
+			passes = a > b;
 		break;
 		case compareType == Comparator::lessThanEqual:
-			return a <= b;
+			passes = a <= b;
 		break;
 		case compareType == Comparator::greaterThanEqual:
-			return a >= b;
+			passes = a >= b;
 		break;
-		case compareType == Comparator::isNull:
-			return a == NULL;
+		case compareType == Comparator::isNull:		//	Not currently used
+			passes = a == NULL;
 		break;
-		case compareType == Comparator::notNull:
-			return a != NULL;
+		case compareType == Comparator::notNull:	//	Not currently used
+			passes = a != NULL;
 		break;
 	}
+
+	fails = !passes;
+	return passes;
 }
 
 template<class T> bool Assert<T>::passed()
@@ -140,17 +145,17 @@ template<class T> bool Assert<T>::passed()
 		throw 0;
 	}
 
-	return false;
+	return passes;
 }
 
 template<class T> bool Assert<T>::failed()
 {
 	if (!canCompare)
 	{
-		throw 0;
+		throw 1;
 	}
 
-	return true;
+	return fails;
 }
 
 template<class T> string Assert<T>::getMessage()
@@ -171,9 +176,7 @@ template<class T> Comparator Assert<T>::getType()
 template<class T> string Assert<T>::getComparison()
 {
 	stringstream result;
-
-	cout << a << endl;
-
+	
 	result << "(\"";
 	result << a;
 	result << "\"";
