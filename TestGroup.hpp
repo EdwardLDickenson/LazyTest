@@ -347,7 +347,6 @@ void TestGroup::notNULL(T x)
 
 //	TODO:
 //
-//	Evaluations should be inside of try/blocks
 //
 //
 //

@@ -41,8 +41,6 @@ int main(int argc, char *argv[])
 	lazy.addGroup(testGroup);
 	lazy.run();
 	lazy.write();
-
-	cin.get();
 }
 
 
