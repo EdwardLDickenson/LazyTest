@@ -41,6 +41,8 @@ int main(int argc, char *argv[])
 	lazy.addGroup(testGroup);
 	lazy.run();
 	lazy.write();
+
+	cin.get();
 }
 
 
@@ -48,6 +50,7 @@ int main(int argc, char *argv[])
 //	TODO:
 //
 //	Improve the reporting functionality
+//
 //
 //
 

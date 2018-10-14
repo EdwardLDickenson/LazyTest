@@ -6,6 +6,17 @@
 #include "TestSuiteDeps.hpp"
 #include "Comparator.hpp"
 
+//	Error Codes
+//
+//	#10:	A == B crashed.  Either A or B is invalid, or the eqaulity operation cannot be performed
+//	#11:	A != B crashed.  Either A or B is invalid, or the inequality operation cannot be performed
+//	#12:	A < B crashed.  Either A or B is invalid, or the less than operator cannot be performed
+//	#13:	A > B crashed.  Either A or B is invalid, or the greater than operator cannot be performed
+//	#14:	A <= B crashed.  Either A or B is invalid, or the less than equal operator cannot be performed
+//	#15:	A >= B crashed.  Either A or B is invalid, or the greater than equal operator cannot be performed
+//	#16:	A == NULL crashed.  Either A is invalid, or the operation cannot be performed.
+//	#17:	A != NULL crashed.  Either A is invalid, or the operation cannot be performed.
+
 //==============================================================================
 //===	Definition	============================================================
 //==============================================================================
@@ -108,29 +119,86 @@ template<class T> bool Assert<T>::getResult()
 {
 	switch(compareType)
 	{
+		//	First 10 error codes are currently reserved and unassigned
 		case compareType == Comparator::equal:
-			passes = a == b;
+			try
+			{
+				passes = a == b;
+			}
+			catch(...)
+			{
+				throw 10;
+			}
 		break;
 		case compareType == Comparator::unequal:
-			passes = a != b;
+			try
+			{
+				passes = a != b;
+			}
+			catch(...)
+			{
+				throw 11;
+			}
 		break;
 		case compareType == Comparator::lessThan:
-			passes = a < b;
+			try
+			{
+				passes = a < b;
+			}
+			catch(...)
+			{
+				throw 12;
+			}
 		break;
 		case compareType == Comparator::greaterThan:
-			passes = a > b;
+			try
+			{
+				passes = a > b;
+			}
+			catch(...)
+			{
+				throw 13;
+			}
 		break;
 		case compareType == Comparator::lessThanEqual:
-			passes = a <= b;
+			try
+			{
+				passes = a <= b;
+			}
+			catch(...)
+			{
+				throw 14;
+			}
 		break;
 		case compareType == Comparator::greaterThanEqual:
-			passes = a >= b;
+			try
+			{
+				passes = a >= b;
+			}
+			catch(...)
+			{
+				throw 15;
+			}
 		break;
 		case compareType == Comparator::isNull:		//	Not currently used
-			passes = a == NULL;
+			try
+			{
+				passes = a == NULL;
+			}
+			catch(...)
+			{
+				throw 16;
+			}
 		break;
 		case compareType == Comparator::notNull:	//	Not currently used
-			passes = a != NULL;
+			try
+			{
+				passes = a != NULL;
+			}
+			catch(...)
+			{
+				throw 17;
+			}
 		break;
 	}
 
