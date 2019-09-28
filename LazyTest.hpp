@@ -24,9 +24,9 @@ Author:	Edward Lloyd Dickenson
 //---	Dependencies	-------------------------------------------------------
 //=============================================================================
 
-#include "TestSuiteDeps.hpp"
+//#include "lazydeps.hpp"
 #include "Assert.hpp"
-#include "TestSuite.hpp"
+#include "testSuite.hpp"
 
 
 

@@ -3,8 +3,8 @@
 #ifndef TESTSUITE_HPP
 #define TESTSUITE_HPP
 
-#include "TestSuiteDeps.hpp"
-#include "TestGroup.hpp"
+#include "lazydeps.hpp"
+#include "testGroup.hpp"
 
 class TestSuite
 {

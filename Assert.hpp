@@ -3,7 +3,7 @@
 #ifndef ASSERT_HPP
 #define ASSERT_HPP
 
-#include "TestSuiteDeps.hpp"
+#include "lazydeps.hpp"
 #include "Comparator.hpp"
 
 //	Error Codes
@@ -117,10 +117,12 @@ template<class T> void Assert<T>::notNull()
 
 template<class T> bool Assert<T>::getResult()
 {
+	cout << compareType << endl;
 	switch(compareType)
 	{
 		//	First 10 error codes are currently reserved and unassigned
-		case compareType == Comparator::equal:
+		//case this.compareType == Comparator::equal:
+        case Assert::compareType == Comparator::equal:
 			try
 			{
 				passes = a == b;
@@ -130,7 +132,8 @@ template<class T> bool Assert<T>::getResult()
 				throw 10;
 			}
 		break;
-		case compareType == Comparator::unequal:
+		//case this.compareType == Comparator::unequal:
+		case Assert::compareType == Comparator::unequal:
 			try
 			{
 				passes = a != b;
@@ -140,7 +143,8 @@ template<class T> bool Assert<T>::getResult()
 				throw 11;
 			}
 		break;
-		case compareType == Comparator::lessThan:
+		//case this.compareType == Comparator::lessThan:
+		case Assert::compareType == Comparator::lessThan:
 			try
 			{
 				passes = a < b;
@@ -150,7 +154,8 @@ template<class T> bool Assert<T>::getResult()
 				throw 12;
 			}
 		break;
-		case compareType == Comparator::greaterThan:
+		//case this.compareType == Comparator::greaterThan:
+		case Assert::compareType == Comparator::greaterThan:
 			try
 			{
 				passes = a > b;
@@ -160,7 +165,8 @@ template<class T> bool Assert<T>::getResult()
 				throw 13;
 			}
 		break;
-		case compareType == Comparator::lessThanEqual:
+		//case this.compareType == Comparator::lessThanEqual:
+		case Assert::compareType == Comparator::lessThanEqual:
 			try
 			{
 				passes = a <= b;
@@ -170,7 +176,8 @@ template<class T> bool Assert<T>::getResult()
 				throw 14;
 			}
 		break;
-		case compareType == Comparator::greaterThanEqual:
+		//case this.compareType == Comparator::greaterThanEqual:
+		case Assert::compareType == Comparator::greaterThanEqual:
 			try
 			{
 				passes = a >= b;
@@ -180,7 +187,8 @@ template<class T> bool Assert<T>::getResult()
 				throw 15;
 			}
 		break;
-		case compareType == Comparator::isNull:		//	Not currently used
+		//case this.compareType == Comparator::isNull:		//	Not currently used
+		case Assert::compareType == Comparator::isNull:
 			try
 			{
 				passes = a == NULL;
@@ -190,7 +198,8 @@ template<class T> bool Assert<T>::getResult()
 				throw 16;
 			}
 		break;
-		case compareType == Comparator::notNull:	//	Not currently used
+		//case this.compareType == Comparator::notNull:	//	Not currently used
+		case Assert::compareType == Comparator::notNull:
 			try
 			{
 				passes = a != NULL;
@@ -244,7 +253,7 @@ template<class T> Comparator Assert<T>::getType()
 template<class T> string Assert<T>::getComparison()
 {
 	stringstream result;
-	
+
 	result << "(\"";
 	result << a;
 	result << "\"";
@@ -284,5 +293,3 @@ template<class T> T Assert<T>::getB()
 //
 //
 //
-
-

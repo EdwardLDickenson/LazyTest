@@ -3,7 +3,7 @@
 #ifndef TESTGROUP_HPP
 #define TESTGROUP_HPP
 
-#include "TestSuiteDeps.hpp"
+#include "lazydeps.hpp"
 #include "Comparator.hpp"
 
 class TestGroup
@@ -138,6 +138,15 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 			//comparisons.push_back(assertion.getComparison());
 		}
 		break;
+        
+        case Comparator::isNull:
+        {
+            //  Do nothing for now.
+        }break;
+        case Comparator::notNull:
+        {
+            //  Do nothing for now.
+        }break;
 	}
 
 	messages.push_back(assertion.getMessage());

@@ -1,8 +1,8 @@
-#include "lazytest.hpp"
+#include "LazyTest.hpp"
 
 int main(int argc, char *argv[])
 {
-	TestSuite lazy("LazyTest Demo");
+	TestSuite lazy("LazyTest Demo.csv");
 	TestGroup testGroup("Test Group");	
 
 	testGroup.equal("These are equal", "These are equal");
@@ -49,7 +49,9 @@ int main(int argc, char *argv[])
 //
 //	Improve the reporting functionality
 //
+//  The file extension: .csv should be turned on automatically for all files 
+//  unless overridden. 
+//  Comma separated value is the only supported file format currently planned
 //
 //
-
 
