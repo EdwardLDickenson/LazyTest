@@ -121,7 +121,6 @@ template<class T> bool Assert<T>::getResult()
 	switch(compareType)
 	{
 		//	First 10 error codes are currently reserved and unassigned
-		//case this.compareType == Comparator::equal:
         case Assert::compareType == Comparator::equal:
 			try
 			{
@@ -130,9 +129,8 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 10;
-			}
-		break;
-		//case this.compareType == Comparator::unequal:
+			}break;
+
 		case Assert::compareType == Comparator::unequal:
 			try
 			{
@@ -141,9 +139,8 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 11;
-			}
-		break;
-		//case this.compareType == Comparator::lessThan:
+			}break;
+
 		case Assert::compareType == Comparator::lessThan:
 			try
 			{
@@ -152,9 +149,8 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 12;
-			}
-		break;
-		//case this.compareType == Comparator::greaterThan:
+			}break;
+
 		case Assert::compareType == Comparator::greaterThan:
 			try
 			{
@@ -163,9 +159,8 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 13;
-			}
-		break;
-		//case this.compareType == Comparator::lessThanEqual:
+			}break;
+
 		case Assert::compareType == Comparator::lessThanEqual:
 			try
 			{
@@ -174,9 +169,8 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 14;
-			}
-		break;
-		//case this.compareType == Comparator::greaterThanEqual:
+			}break;
+
 		case Assert::compareType == Comparator::greaterThanEqual:
 			try
 			{
@@ -185,9 +179,8 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 15;
-			}
-		break;
-		//case this.compareType == Comparator::isNull:		//	Not currently used
+			}break;
+
 		case Assert::compareType == Comparator::isNull:
 			try
 			{
@@ -196,9 +189,8 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 16;
-			}
-		break;
-		//case this.compareType == Comparator::notNull:	//	Not currently used
+			}break;
+
 		case Assert::compareType == Comparator::notNull:
 			try
 			{
@@ -207,8 +199,7 @@ template<class T> bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 17;
-			}
-		break;
+			}break;
 	}
 
 	fails = !passes;
