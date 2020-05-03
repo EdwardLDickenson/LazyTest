@@ -9,3 +9,6 @@ Easy to use C++ unit test library
 *   Class names containing a single word should begin with a capital letter. 
 *   Class names containing more than one word should use camel case.
 *   Dependencies and utilities should not be capitalized
+
+#  TODO
+Standardize the exceptions and fill out the stubs
