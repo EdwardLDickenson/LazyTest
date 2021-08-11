@@ -35,15 +35,17 @@ public:
 
 	template<class T> void addAssertion(Assert<T> assertion);
 	void run();
-	
+
 	template<class T> void equal(T x, T y);
 	template<class T> void unequal(T x, T y);
 	template<class T> void lessThan(T x, T y);
 	template<class T> void greaterThan(T x, T y);
 	template<class T> void lessThanEqual(T x, T y);
 	template<class T> void greaterThanEqual(T x, T y);
-	template<class T> void isNULL(T x);
-	template<class T> void notNULL(T x);
+	template<class T> void isTrue(T x);
+	template<class T> void isFalse(T x);
+	template<class T> void isZero(T x);
+	template<class T> void isOne(T x);
 
 	bool passed();
 	bool failed();
@@ -64,7 +66,8 @@ TestGroup::TestGroup(string name)
 	defaultMessage = "No specified error message";
 }
 
-template<class T> void TestGroup::addAssertion(Assert<T> assertion)
+template<class T>
+void TestGroup::addAssertion(Assert<T> assertion)
 {
 	T a = assertion.getA();
 	T b = assertion.getB();
@@ -81,8 +84,7 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 			assertions.push_back(equalFunc);
 			//messages.push_back(assertion.getMessage());
 			//comparisons.push_back(assertion.getComparison());
-		}
-		break;
+		}break;
 		case Comparator::unequal:
 		{
 			function<bool()> unequalFunc = [=]() {
@@ -92,8 +94,7 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 			assertions.push_back(unequalFunc);
 			//messages.push_back(assertion.getMessage());
 			//comparisons.push_back(assertion.getComparison());
-		}
-		break;
+		}break;
 		case Comparator::lessThan:
 		{
 			function<bool()> lessThanFunc = [=]() {
@@ -103,8 +104,7 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 			assertions.push_back(lessThanFunc);
 			//messages.push_back(assertion.getMessage());
 			//comparisons.push_back(assertion.getComparison());
-		}
-		break;
+		}break;
 		case Comparator::greaterThan:
 		{
 			function<bool()> greaterThanFunc = [=]() {
@@ -114,8 +114,7 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 			assertions.push_back(greaterThanFunc);
 			//messages.push_back(assertion.getMessage());
 			//comparisons.push_back(assertion.getComparison());
-		}
-		break;
+		}break;
 		case Comparator::lessThanEqual:
 		{
 			function<bool()> lessThanEqualFunc = [=]() {
@@ -125,8 +124,7 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 			assertions.push_back(lessThanEqualFunc);
 			//messages.push_back(assertion.getMessage());
 			//comparisons.push_back(assertion.getComparison());
-		}
-		break;
+		}break;
 		case Comparator::greaterThanEqual:
 		{
 			function<bool()> greaterThanEqualFunc = [=]() {
@@ -136,17 +134,59 @@ template<class T> void TestGroup::addAssertion(Assert<T> assertion)
 			assertions.push_back(greaterThanEqualFunc);
 			//messages.push_back(assertion.getMessage());
 			//comparisons.push_back(assertion.getComparison());
-		}
-		break;
-        
-        case Comparator::isNull:
-        {
-            //  Do nothing for now.
-        }break;
-        case Comparator::notNull:
-        {
-            //  Do nothing for now.
-        }break;
+		}break;
+		case Comparator::isTrue:
+		{
+			function<bool()> isTrueFunc = [=](){
+				return a && true;
+			};
+
+			assertions.push_back(isTrueFunc);
+		}break;
+		case Comparator::isFalse:
+		{
+			function<bool()> equalFunc = [=]() {
+				return a == b;
+			};
+
+			function<bool()> isFalseFunc = [=](){
+				if(!a){
+					return true;
+				}
+				return false;
+
+				/*if(a == false){
+					return true;
+				}
+				return false;*/
+				//	Logically this works. However, it causes a compilation error
+				//	passing certain types to Assert. This will be further
+				//	tested and fixed.
+				//return a ^ true;
+			};
+
+			assertions.push_back(isFalseFunc);
+		}break;
+		case Comparator::isZero:
+		{
+			function<bool()> isZeroFunc = [=](){
+				return a == b;
+			};
+
+			assertions.push_back(isZeroFunc);
+		}break;
+		case Comparator::isOne:
+		{
+			function<bool()> isOneFunc = [=](){
+				return a == b;
+			};
+
+			assertions.push_back(isOneFunc);
+		}break;
+
+		default:{
+
+		}break;
 	}
 
 	messages.push_back(assertion.getMessage());
@@ -233,7 +273,7 @@ bool TestGroup::failed()
 {
 	if (assertions.size() == 0)
 	{
-		throw "Emptry set";
+		throw "Empty set";
 	}
 
 	if (!executed)
@@ -290,7 +330,7 @@ vector<string> TestGroup::getComparisons()
 	return comparisons;
 }
 
-template<class T> 
+template<class T>
 void TestGroup::equal(T x, T y)
 {
 	Assert<T> comparison(defaultMessage, x, y);
@@ -298,7 +338,7 @@ void TestGroup::equal(T x, T y)
 	addAssertion(comparison);
 }
 
-template<class T> 
+template<class T>
 void TestGroup::unequal(T x, T y)
 {
 	Assert<T> comparison(defaultMessage, x, y);
@@ -339,15 +379,45 @@ void TestGroup::greaterThanEqual(T x, T y)
 }
 
 template<class T>
-void TestGroup::isNULL(T x)
+void TestGroup::isTrue(T x)
 {
-
+	//Assert<T> comparison(defaultMessage, x);
+	Assert<T> comparison(defaultMessage, x, true);
+	comparison.isTrue();
+	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::notNULL(T x)
+void TestGroup::isFalse(T x)
 {
+	//Assert<T> comparison(defaultMessage, x);
+	Assert<T> comparison(defaultMessage, x, false);
+	comparison.isFalse();
+	addAssertion(comparison);
+}
 
+template<class T>
+void TestGroup::isZero(T x)
+{
+	Assert<T> comparison(defaultMessage, x, 0);
+	comparison.isZero();
+	addAssertion(comparison);
+}
+
+template<>
+void TestGroup::isZero(float x)
+{
+	Assert<float> comparison(defaultMessage, x, 0.0);
+	comparison.isZero();
+	addAssertion(comparison);
+}
+
+template<class T>
+void TestGroup::isOne(T x)
+{
+	Assert<T> comparison(defaultMessage, x, 1);
+	comparison.isOne();
+	addAssertion(comparison);
 }
 
 #endif	//	TESTGROUP_HPP
@@ -359,5 +429,3 @@ void TestGroup::notNULL(T x)
 //
 //
 //
-
-

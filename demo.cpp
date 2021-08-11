@@ -1,18 +1,22 @@
 #include "LazyTest.hpp"
 
+//	This demo intentionally causes error to demonstrate the functionality of
+//	LazyTest and ancillary tools. It also provides a functional example of
+//	how to use the library.
+
 int main(int argc, char *argv[])
 {
-	TestSuite lazy("LazyTest Demo.csv");
-	TestGroup testGroup("Test Group");	
+	TestSuite lazy("demo.csv");
+	TestGroup testGroup("Test Group");
 
 	testGroup.equal("These are equal", "These are equal");
-	testGroup.equal("These are unequal, ", "but LazyTest expects them to be equal");
+	testGroup.equal("These are unequal,", "but LazyTest expects them to be equal");
 
 	testGroup.unequal("These are", "unequal");
 	testGroup.unequal("These are equal, but LazyTest expects them to be unequal", "These are equal, but LazyTest expects them to be unequal");
 
-	testGroup.equal("Adding two or more assertions of the same value and type, ", "should still count as two separate asssertions");
-	testGroup.equal("Adding two or more assertions of the same value and type, ", "should still count as two separate asssertions");
+	testGroup.equal("Adding two or more assertions of the same value and type,", "should still count as two separate asssertions");
+	testGroup.equal("Adding two or more assertions of the same value and type,", "should still count as two separate asssertions");
 
 	testGroup.equal(25, 25);
 	testGroup.equal(25, 52);
@@ -49,9 +53,8 @@ int main(int argc, char *argv[])
 //
 //	Improve the reporting functionality
 //
-//  The file extension: .csv should be turned on automatically for all files 
-//  unless overridden. 
+//  The file extension: .csv should be turned on automatically for all files
+//  unless overridden.
 //  Comma separated value is the only supported file format currently planned
 //
 //
-

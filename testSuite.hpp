@@ -52,7 +52,10 @@ void TestSuite::write()
 
 		for (size_t j = 0; j < messageList.size(); ++j)
 		{
-			output << "\"" + messageList[j] + "\"" << "," << to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << "," << comparisonList[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
+			//output << "\"" + messageList[j] + "\"" << "," << to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << "," << comparisonList[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
+			output << "\"" << messageList[j] + "\"" << ",";
+			output << to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << ",";
+			output << comparisonList[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
 		}
 
 		if (messageList.size() == 0)
@@ -89,4 +92,3 @@ void TestSuite::run(size_t testNumber)
 //
 //
 //
-

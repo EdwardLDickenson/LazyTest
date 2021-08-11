@@ -34,6 +34,7 @@ private:
 	string errmsg;
 
 public:
+	//Assert(string msg, T x);
 	Assert(string msg, T x, T y);
 
 	void equal();
@@ -42,8 +43,10 @@ public:
 	void greaterThan();
 	void lessThanEqual();
 	void greaterThanEqual();
-	void isNull();
-	void notNull();
+	void isTrue();
+	void isFalse();
+	void isZero();
+	void isOne();
 
 	bool passed();
 	bool failed();
@@ -55,6 +58,18 @@ public:
 	T getA();
 	T getB();
 };
+
+/*
+template<class T> Assert<T>::Assert(string msg, T x)
+{
+	canCompare = false;
+	passes = false;
+	fails = true;
+	errmsg = msg;
+
+	a = x;
+}
+*/
 
 template<class T> Assert<T>::Assert(string msg, T x, T y)
 {
@@ -103,21 +118,35 @@ template<class T> void Assert<T>::greaterThanEqual()
 	canCompare = true;
 }
 
-template<class T> void Assert<T>::isNull()
+template<class T> void Assert<T>::isTrue()
 {
-	compareType = Comparator::isNull;
+	compareType = Comparator::isTrue;
 	canCompare = true;
 }
 
-template<class T> void Assert<T>::notNull()
+template<class T> void Assert<T>::isFalse()
 {
-	compareType = Comparator::notNull;
+	compareType = Comparator::isFalse;
 	canCompare = true;
 }
 
-template<class T> bool Assert<T>::getResult()
+template<class T>
+void Assert<T>::isZero()
 {
-	cout << compareType << endl;
+	compareType = Comparator::isZero;
+	canCompare = true;
+}
+
+template<class T>
+void Assert<T>::isOne()
+{
+	compareType = Comparator::isOne;
+	canCompare = true;
+}
+
+/*template<class T> bool Assert<T>::getResult()
+{
+	//cout << compareType << endl;
 	switch(compareType)
 	{
 		//	First 10 error codes are currently reserved and unassigned
@@ -181,30 +210,21 @@ template<class T> bool Assert<T>::getResult()
 				throw 15;
 			}break;
 
-		case Assert::compareType == Comparator::isNull:
+		case Assert::compareType == Comparator::isTrue:
 			try
 			{
-				passes = a == NULL;
+				cout << "1234" << endl;
+				passes = a == true;
 			}
 			catch(...)
 			{
-				throw 16;
-			}break;
-
-		case Assert::compareType == Comparator::notNull:
-			try
-			{
-				passes = a != NULL;
-			}
-			catch(...)
-			{
-				throw 17;
+				throw 18;
 			}break;
 	}
 
 	fails = !passes;
 	return passes;
-}
+}*/
 
 template<class T> bool Assert<T>::passed()
 {
@@ -253,7 +273,40 @@ template<class T> string Assert<T>::getComparison()
 	result << b;
 	result << "\")";
 
-	return result.str();;
+	return result.str();
+}
+
+template<> string Assert<bool>::getComparison()
+{
+	string aStr = "False ";
+	string bStr = "False ";
+
+	if(a)
+	{
+		aStr = "True ";
+	}
+
+	if(b)
+	{
+		bStr = "True ";
+	}
+
+	stringstream result;
+
+	result << "(";
+	result << aStr;
+	result << getComparatorString(compareType);
+
+	if(compareType != Comparator::isTrue && compareType != Comparator::isFalse)
+	{
+		result << "\"";
+		result << bStr;
+		result << "\"";
+	}
+
+	result << ")";
+
+	return result.str();
 }
 
 template<class T> T Assert<T>::getA()

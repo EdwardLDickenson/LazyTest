@@ -1,10 +1,14 @@
+#pragma once
+
 #ifndef COMPARATOR_HPP
 #define COMPARATOR_HPP
 
 enum Comparator {
 	//	Unary operators
-	isNull,
-	notNull,
+	isTrue,
+	isFalse,
+	isZero,
+	isOne,
 
 	//	Binary operators
 	equal,
@@ -17,7 +21,7 @@ enum Comparator {
 };
 
 //  Should create a unicode/multicharacter version of this function.
-//  For example the <= sign could be replaced with a single character. 
+//  For example the <= sign could be replaced with a single character.
 //  But that would hurt compatibility while helping readability.
 string getComparatorString(Comparator compareType)
 {
@@ -41,18 +45,22 @@ string getComparatorString(Comparator compareType)
 		case::Comparator::greaterThanEqual:
 			return ">=";
 		break;
-        //  Ø is not 0. It is empty set
-		case::Comparator::isNull:
-			return "u8\2205";
+		case Comparator::isTrue:
+			return "is True";
 		break;
-        //  Ø is not 0. It is empty set
-		case::Comparator::notNull:
-			return "!u8\2205";
+		case Comparator::isFalse:
+			return "is False";
+		break;
+		case Comparator::isZero:
+			return "==";
+		break;
+		case Comparator::isOne:
+			return "==";
 		break;
 	}
-	
-	// This return statement seems unlikely
-	return "NULL comparator?";
+
+	//	This return statement is used for debug purposes
+	return "Bad or missing comparison. Check the Comparator enum, testGroup, or Assert class";
 }
 
 #endif	//	COMPARATOR_HPP
@@ -63,5 +71,3 @@ string getComparatorString(Comparator compareType)
 //
 //
 //
-
-
