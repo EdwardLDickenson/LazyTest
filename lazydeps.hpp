@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TESTSUITE_DEPS_HPP
-#define TESTSUITE_DEPS_HPP
+#ifndef LAZYDEPS_HPP
+#define LAZYDEPS_HPP
 
 #include <iostream>
 #include <iomanip>
@@ -17,7 +17,7 @@
 
 using namespace std;
 
-#endif	//	TESTSUITE_DEPS_HPP
+#endif	//	LAZYDEPS_HPP
 
 
 

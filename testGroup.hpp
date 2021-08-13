@@ -36,16 +36,16 @@ public:
 	template<class T> void addAssertion(Assert<T> assertion);
 	void run();
 
-	template<class T> void equal(T x, T y);
-	template<class T> void unequal(T x, T y);
-	template<class T> void lessThan(T x, T y);
-	template<class T> void greaterThan(T x, T y);
-	template<class T> void lessThanEqual(T x, T y);
-	template<class T> void greaterThanEqual(T x, T y);
-	template<class T> void isTrue(T x);
-	template<class T> void isFalse(T x);
-	template<class T> void isZero(T x);
-	template<class T> void isOne(T x);
+	template<class T> void equal(T x, T y, string message = "");
+	template<class T> void unequal(T x, T y, string message = "");
+	template<class T> void lessThan(T x, T y, string message = "");
+	template<class T> void greaterThan(T x, T y, string message = "");
+	template<class T> void lessThanEqual(T x, T y, string message = "");
+	template<class T> void greaterThanEqual(T x, T y, string message = "");
+	template<class T> void isTrue(T x, string message = "");
+	template<class T> void isFalse(T x, string message = "");
+	template<class T> void isZero(T x, string message = "");
+	template<class T> void isOne(T x, string message = "");
 
 	bool passed();
 	bool failed();
@@ -331,91 +331,144 @@ vector<string> TestGroup::getComparisons()
 }
 
 template<class T>
-void TestGroup::equal(T x, T y)
+void TestGroup::equal(T x, T y, string message)
 {
-	Assert<T> comparison(defaultMessage, x, y);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, y);
 	comparison.equal();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::unequal(T x, T y)
+void TestGroup::unequal(T x, T y, string message)
 {
-	Assert<T> comparison(defaultMessage, x, y);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, y);
 	comparison.unequal();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::lessThan(T x, T y)
+void TestGroup::lessThan(T x, T y, string message)
 {
-	Assert<T> comparison(defaultMessage, x, y);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, y);
 	comparison.lessThan();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::greaterThan(T x, T y)
+void TestGroup::greaterThan(T x, T y, string message)
 {
-	Assert<T> comparison(defaultMessage, x, y);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, y);
 	comparison.greaterThan();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::lessThanEqual(T x, T y)
+void TestGroup::lessThanEqual(T x, T y, string message)
 {
-	Assert<T> comparison(defaultMessage, x, y);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, y);
 	comparison.lessThanEqual();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::greaterThanEqual(T x, T y)
+void TestGroup::greaterThanEqual(T x, T y, string message)
 {
-	Assert<T> comparison(defaultMessage, x, y);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, y);
 	comparison.greaterThanEqual();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::isTrue(T x)
+void TestGroup::isTrue(T x, string message)
 {
-	//Assert<T> comparison(defaultMessage, x);
-	Assert<T> comparison(defaultMessage, x, true);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, true);
 	comparison.isTrue();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::isFalse(T x)
+void TestGroup::isFalse(T x, string message)
 {
-	//Assert<T> comparison(defaultMessage, x);
-	Assert<T> comparison(defaultMessage, x, false);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, false);
 	comparison.isFalse();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::isZero(T x)
+void TestGroup::isZero(T x, string message)
 {
-	Assert<T> comparison(defaultMessage, x, 0);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, 0);
 	comparison.isZero();
 	addAssertion(comparison);
 }
 
 template<>
-void TestGroup::isZero(float x)
+void TestGroup::isZero(float x, string message)
 {
-	Assert<float> comparison(defaultMessage, x, 0.0);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<float> comparison(message, x, 0.0);
 	comparison.isZero();
 	addAssertion(comparison);
 }
 
 template<class T>
-void TestGroup::isOne(T x)
+void TestGroup::isOne(T x, string message)
 {
-	Assert<T> comparison(defaultMessage, x, 1);
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<T> comparison(message, x, 1);
 	comparison.isOne();
 	addAssertion(comparison);
 }

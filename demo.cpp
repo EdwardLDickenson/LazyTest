@@ -1,4 +1,4 @@
-#include "LazyTest.hpp"
+#include "lazytest.hpp"
 
 //	This demo intentionally causes error to demonstrate the functionality of
 //	LazyTest and ancillary tools. It also provides a functional example of
