@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
 	unary.isOne(intZero, "Test 0i is not 1i");
 	unary.isOne(intZero + 1, "Test 1i is 1i");
-	unary.isOne(intZero - 1, "Test -1i is 1i");
+	unary.isOne(intZero - 1, "Test -1i is not 1i");
 
 	//	Unsigned Integers
 	unary.isZero(uintZero + 1, "Test 1ui is not 0ui");
@@ -91,4 +91,6 @@ int main(int argc, char *argv[])
 	suite.addGroup(unary);
 	suite.run();
 	suite.write();
+
+	return 0;
 }

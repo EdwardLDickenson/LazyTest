@@ -43,16 +43,54 @@ void TestSuite::write()
 {
 	size_t testSum = 0;
 
-	output << "Message,Number,Time,Comparison" << endl;
+	output << "Message,Time,Comparison,Number" << endl;
 
 	for (size_t i = 0; i < groups.size(); ++i)
 	{
 		vector<string> messageList = groups[i].getFailedMessages();
 		vector<string> comparisonList = groups[i].getFailedComparisons();
 
+		double size = groups[i].getSize();
+		double nPassed = groups[i].getPassedSize();
+		double nFailed = groups[i].getFailedSize();
+
+		//	The conditional statements below were created for divide by zero
+		//	cases. For example when all tests pass. They can probably be collapsed
+
+		if(size > 0)
+		{
+			output << "--\t" << nPassed << " passed, ";
+			output << nFailed << " failed, out of ";
+			output << size << " total tests " << endl;
+		}
+
+		else
+		{
+			output << "--	0 tests were created. 0 tests were executed" << endl;
+		}
+
+		if(nPassed > 0)
+		{
+			output << "--\t" << (nPassed / size * 100) << "% passed" << endl;
+		}
+
+		else
+		{
+			output << "--\t 0% passed" << endl;
+		}
+
+		if(nFailed > 0)
+		{
+			output << "--\t" << (nFailed / size * 100) << "% failed" << endl;
+		}
+
+		else
+		{
+			output << "--\t 0% failed" << endl;
+		}
+
 		for (size_t j = 0; j < messageList.size(); ++j)
 		{
-			//output << "\"" + messageList[j] + "\"" << "," << to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << "," << comparisonList[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
 			output << "\"" << messageList[j] + "\"" << ",";
 			output << to_string((double(groups[i].getTimes()[j]) / CLOCKS_PER_SEC)) << ",";
 			output << comparisonList[j] << "," << (groups[i].getFailedIndicies()[j] + testSum) << endl;
@@ -65,7 +103,7 @@ void TestSuite::write()
 
 		else
 		{
-			output << groups[i].getName() << " failed to pass" << endl;
+			output << "--\t" << groups[i].getName() << " failed to pass" << endl;
 		}
 
 		testSum += groups[i].getSize();

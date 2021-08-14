@@ -34,7 +34,6 @@ private:
 	string errmsg;
 
 public:
-	//Assert(string msg, T x);
 	Assert(string msg, T x, T y);
 
 	void equal();
@@ -52,24 +51,13 @@ public:
 	bool failed();
 	bool getResult();
 	Comparator getType();
+	void setType(Comparator type);
 
 	string getMessage();
 	string getComparison();
 	T getA();
 	T getB();
 };
-
-/*
-template<class T> Assert<T>::Assert(string msg, T x)
-{
-	canCompare = false;
-	passes = false;
-	fails = true;
-	errmsg = msg;
-
-	a = x;
-}
-*/
 
 template<class T> Assert<T>::Assert(string msg, T x, T y)
 {
@@ -144,13 +132,14 @@ void Assert<T>::isOne()
 	canCompare = true;
 }
 
-/*template<class T> bool Assert<T>::getResult()
+template<class T>
+bool Assert<T>::getResult()
 {
-	//cout << compareType << endl;
 	switch(compareType)
 	{
 		//	First 10 error codes are currently reserved and unassigned
-        case Assert::compareType == Comparator::equal:
+		case Comparator::equal:
+		{
 			try
 			{
 				passes = a == b;
@@ -158,9 +147,10 @@ void Assert<T>::isOne()
 			catch(...)
 			{
 				throw 10;
-			}break;
-
-		case Assert::compareType == Comparator::unequal:
+			}
+		}break;
+		case Comparator::unequal:
+		{
 			try
 			{
 				passes = a != b;
@@ -168,9 +158,10 @@ void Assert<T>::isOne()
 			catch(...)
 			{
 				throw 11;
-			}break;
-
-		case Assert::compareType == Comparator::lessThan:
+			}
+		}break;
+		case Comparator::lessThan:
+		{
 			try
 			{
 				passes = a < b;
@@ -178,9 +169,10 @@ void Assert<T>::isOne()
 			catch(...)
 			{
 				throw 12;
-			}break;
-
-		case Assert::compareType == Comparator::greaterThan:
+			}
+		}break;
+		case Comparator::greaterThan:
+		{
 			try
 			{
 				passes = a > b;
@@ -188,9 +180,10 @@ void Assert<T>::isOne()
 			catch(...)
 			{
 				throw 13;
-			}break;
-
-		case Assert::compareType == Comparator::lessThanEqual:
+			}
+		}break;
+		case Comparator::lessThanEqual:
+		{
 			try
 			{
 				passes = a <= b;
@@ -198,9 +191,10 @@ void Assert<T>::isOne()
 			catch(...)
 			{
 				throw 14;
-			}break;
-
-		case Assert::compareType == Comparator::greaterThanEqual:
+			}
+		}break;
+		case Comparator::greaterThanEqual:
+		{
 			try
 			{
 				passes = a >= b;
@@ -208,23 +202,73 @@ void Assert<T>::isOne()
 			catch(...)
 			{
 				throw 15;
-			}break;
-
-		case Assert::compareType == Comparator::isTrue:
+			}
+		}break;
+		case Comparator::isZero:
+		{
 			try
 			{
-				cout << "1234" << endl;
-				passes = a == true;
+				return a == b;
+			}
+			catch(...)
+			{
+				throw 20;
+			}
+		}break;
+		case Comparator::isOne:
+		{
+			try
+			{
+				return a == b;
+			}
+			catch(...)
+			{
+				throw 20;
+			}
+		}break;
+
+		default:
+		{
+			errmsg = "Comparison not supported";
+		}break;
+	}
+
+	fails = !passes;
+	return passes;
+}
+
+template<>
+bool Assert<bool>::getResult()
+{
+	switch(compareType)
+	{
+		case Comparator::isTrue:
+			try
+			{
+				passes = a && true;
 			}
 			catch(...)
 			{
 				throw 18;
 			}break;
+		case Comparator::isFalse:
+			try
+			{
+				passes = a ^ true;
+			}
+			catch(...)
+			{
+				throw 19;
+			}break;
+		default:
+		{
+			errmsg = "LazyTest type conversion failed";
+		}break;
 	}
 
 	fails = !passes;
 	return passes;
-}*/
+}
 
 template<class T> bool Assert<T>::passed()
 {
@@ -259,6 +303,11 @@ template<class T> Comparator Assert<T>::getType()
 	}
 
 	return compareType;
+}
+
+template<class T> void Assert<T>::setType(Comparator type)
+{
+	compareType = type;
 }
 
 template<class T> string Assert<T>::getComparison()

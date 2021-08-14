@@ -27,8 +27,8 @@ public:
 	TestGroup(string name);
 
 	size_t getSize();
-	size_t nFailed();
-	size_t nPassed();
+	size_t getFailedSize();
+	size_t getPassedSize();
 	string getName();
 	string getReport();
 	clock_t getRuntime();
@@ -67,130 +67,55 @@ TestGroup::TestGroup(string name)
 }
 
 template<class T>
-void TestGroup::addAssertion(Assert<T> assertion)
+void TestGroup::addAssertion(Assert<T> comparison)
 {
-	T a = assertion.getA();
-	T b = assertion.getB();
-	vector<function<bool(T, T)>> test;
+	T a = comparison.getA();
+	T b = comparison.getB();
+	string msg = comparison.getMessage();
+	Comparator cmp = comparison.getType();
+	Assert<T> tmp(msg, a, b);
 
-	switch (assertion.getType())
+	//	Using a lambda function allows us to create a list of assertions with
+	//	different types. Without a similar feature we would probably end up
+	//	using something like a heterogenous container, which is reasonably
+	//	difficult to implement, to accomplish the same result. Because a vector
+	//	of these lambda functions contains variables to be tested we can pass
+	//	variables of different types from the front end of the library.
+	function<bool()> getResultFunc = [=]()->bool{
+		Assert<T> assertion(msg, a, b);
+		assertion.setType(cmp);
+
+		return assertion.getResult();
+	};
+
+	messages.push_back(comparison.getMessage());
+	comparisons.push_back(comparison.getComparison());
+	assertions.push_back(getResultFunc);
+}
+
+void TestGroup::run()
+{
+	executed = true;
+
+	for(size_t i = 0; i < assertions.size(); ++i)
 	{
-		case Comparator::equal:
+		clock_t tmp = clock();
+
+		bool testPassed = assertions[i](/*No parameters, but this is technically a function call*/);
+
+		if(!testPassed)
 		{
-			function<bool()> equalFunc = [=]() {
-				return a == b;
-			};
+			passedAllTests = false;
+			failedTests.push_back(i);
 
-			assertions.push_back(equalFunc);
-			//messages.push_back(assertion.getMessage());
-			//comparisons.push_back(assertion.getComparison());
-		}break;
-		case Comparator::unequal:
-		{
-			function<bool()> unequalFunc = [=]() {
-				return a != b;
-			};
+			failedMessages.push_back(messages[i]);
+			failedComparisons.push_back(comparisons[i]);
+			++nfailed;
+		}
 
-			assertions.push_back(unequalFunc);
-			//messages.push_back(assertion.getMessage());
-			//comparisons.push_back(assertion.getComparison());
-		}break;
-		case Comparator::lessThan:
-		{
-			function<bool()> lessThanFunc = [=]() {
-				return a < b;
-			};
-
-			assertions.push_back(lessThanFunc);
-			//messages.push_back(assertion.getMessage());
-			//comparisons.push_back(assertion.getComparison());
-		}break;
-		case Comparator::greaterThan:
-		{
-			function<bool()> greaterThanFunc = [=]() {
-				return a > b;
-			};
-
-			assertions.push_back(greaterThanFunc);
-			//messages.push_back(assertion.getMessage());
-			//comparisons.push_back(assertion.getComparison());
-		}break;
-		case Comparator::lessThanEqual:
-		{
-			function<bool()> lessThanEqualFunc = [=]() {
-				return a <= b;
-			};
-
-			assertions.push_back(lessThanEqualFunc);
-			//messages.push_back(assertion.getMessage());
-			//comparisons.push_back(assertion.getComparison());
-		}break;
-		case Comparator::greaterThanEqual:
-		{
-			function<bool()> greaterThanEqualFunc = [=]() {
-				return a >= b;
-			};
-
-			assertions.push_back(greaterThanEqualFunc);
-			//messages.push_back(assertion.getMessage());
-			//comparisons.push_back(assertion.getComparison());
-		}break;
-		case Comparator::isTrue:
-		{
-			function<bool()> isTrueFunc = [=](){
-				return a && true;
-			};
-
-			assertions.push_back(isTrueFunc);
-		}break;
-		case Comparator::isFalse:
-		{
-			function<bool()> equalFunc = [=]() {
-				return a == b;
-			};
-
-			function<bool()> isFalseFunc = [=](){
-				if(!a){
-					return true;
-				}
-				return false;
-
-				/*if(a == false){
-					return true;
-				}
-				return false;*/
-				//	Logically this works. However, it causes a compilation error
-				//	passing certain types to Assert. This will be further
-				//	tested and fixed.
-				//return a ^ true;
-			};
-
-			assertions.push_back(isFalseFunc);
-		}break;
-		case Comparator::isZero:
-		{
-			function<bool()> isZeroFunc = [=](){
-				return a == b;
-			};
-
-			assertions.push_back(isZeroFunc);
-		}break;
-		case Comparator::isOne:
-		{
-			function<bool()> isOneFunc = [=](){
-				return a == b;
-			};
-
-			assertions.push_back(isOneFunc);
-		}break;
-
-		default:{
-
-		}break;
+		clock_t runtime = clock() - tmp;
+		runtimes.push_back(runtime);
 	}
-
-	messages.push_back(assertion.getMessage());
-	comparisons.push_back(assertion.getComparison());
 }
 
 size_t TestGroup::getSize()
@@ -198,12 +123,12 @@ size_t TestGroup::getSize()
 	return assertions.size();
 }
 
-size_t TestGroup::nFailed()
+size_t TestGroup::getFailedSize()
 {
 	return nfailed;
 }
 
-size_t TestGroup::nPassed()
+size_t TestGroup::getPassedSize()
 {
 	return assertions.size() - nfailed;
 }
@@ -239,7 +164,7 @@ string TestGroup::getReport()
 
 	if (passed())
 	{
-		return groupName + " passed all test";
+		return groupName + " passed all tests";
 	}
 
 	string result = "";
@@ -282,27 +207,6 @@ bool TestGroup::failed()
 	}
 
 	return !passedAllTests;
-}
-
-void TestGroup::run()
-{
-	executed = true;
-
-	for (size_t i = 0; i < assertions.size(); ++i)
-	{
-		clock_t tmp = clock();
-
-		if (!assertions[i]())
-		{
-			passedAllTests = false;
-			failedTests.push_back(i);
-			failedMessages.push_back(messages[i]);
-			failedComparisons.push_back(comparisons[i]);
-		}
-
-		clock_t runtime = clock() - tmp;
-		runtimes.push_back(runtime);
-	}
 }
 
 vector<size_t> TestGroup::getFailedIndicies()
@@ -443,19 +347,6 @@ void TestGroup::isZero(T x, string message)
 	}
 
 	Assert<T> comparison(message, x, 0);
-	comparison.isZero();
-	addAssertion(comparison);
-}
-
-template<>
-void TestGroup::isZero(float x, string message)
-{
-	if(message.length() == 0)
-	{
-		message = defaultMessage;
-	}
-
-	Assert<float> comparison(message, x, 0.0);
 	comparison.isZero();
 	addAssertion(comparison);
 }
