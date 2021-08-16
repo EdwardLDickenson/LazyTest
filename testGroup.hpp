@@ -375,7 +375,6 @@ void TestGroup::isOne(T x, string message)
 
 void TestGroup::isMax(short x, string message)
 {
-	cout << "This gets called" << endl;
 	if(message.length() == 0)
 	{
 		message = defaultMessage;
