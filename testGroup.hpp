@@ -46,6 +46,14 @@ public:
 	template<class T> void isFalse(T x, string message = "");
 	template<class T> void isZero(T x, string message = "");
 	template<class T> void isOne(T x, string message = "");
+	void isMax(short x, string message = "");
+	void isMax(unsigned short x, string message = "");
+	void isMax(int x, string message = "");
+	void isMax(unsigned int x, string message = "");
+	void isMax(long x, string message = "");
+	void isMax(unsigned long x, string message = "");
+	void isMax(float x, string message = "");
+	void isMax(double x, string message = "");
 
 	bool passed();
 	bool failed();
@@ -73,7 +81,6 @@ void TestGroup::addAssertion(Assert<T> comparison)
 	T b = comparison.getB();
 	string msg = comparison.getMessage();
 	Comparator cmp = comparison.getType();
-	Assert<T> tmp(msg, a, b);
 
 	//	Using a lambda function allows us to create a list of assertions with
 	//	different types. Without a similar feature we would probably end up
@@ -81,6 +88,8 @@ void TestGroup::addAssertion(Assert<T> comparison)
 	//	difficult to implement, to accomplish the same result. Because a vector
 	//	of these lambda functions contains variables to be tested we can pass
 	//	variables of different types from the front end of the library.
+
+
 	function<bool()> getResultFunc = [=]()->bool{
 		Assert<T> assertion(msg, a, b);
 		assertion.setType(cmp);
@@ -361,6 +370,106 @@ void TestGroup::isOne(T x, string message)
 
 	Assert<T> comparison(message, x, 1);
 	comparison.isOne();
+	addAssertion(comparison);
+}
+
+void TestGroup::isMax(short x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	short shortMax = SHRT_MAX;
+
+	Assert<short> comparison(message, x, shortMax);
+	comparison.isMax();
+	addAssertion<short>(comparison);
+}
+
+void TestGroup::isMax(unsigned short x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	unsigned short ushortMax = USHRT_MAX;
+
+	Assert<unsigned short> comparison(message, x, ushortMax);
+	comparison.isMax();
+	addAssertion<unsigned short>(comparison);
+}
+
+void TestGroup::isMax(int x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<int> comparison(message, x, INT_MAX);
+	comparison.isMax();
+	addAssertion(comparison);
+}
+
+void TestGroup::isMax(unsigned int x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<unsigned int> comparison(message, x, UINT_MAX);
+	comparison.isMax();
+	addAssertion(comparison);
+}
+
+void TestGroup::isMax(long x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<long> comparison(message, x, LONG_MAX);
+	comparison.isMax();
+	addAssertion(comparison);
+}
+
+void TestGroup::isMax(unsigned long x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<unsigned long> comparison(message, x, ULONG_MAX);
+	comparison.isMax();
+	addAssertion(comparison);
+}
+
+void TestGroup::isMax(float x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<float> comparison(message, x, FLT_MAX);
+	comparison.isMax();
+	addAssertion(comparison);
+}
+
+void TestGroup::isMax(double x, string message)
+{
+	if(message.length() == 0)
+	{
+		message = defaultMessage;
+	}
+
+	Assert<double> comparison(message, x, DBL_MAX);
+	comparison.isMax();
 	addAssertion(comparison);
 }
 

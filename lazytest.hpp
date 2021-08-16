@@ -48,6 +48,9 @@ Author:	Edward Lloyd Dickenson
 //	Some capacity to check for infinite loops would be nice. Something like
 //	a run time cap for a while loop would work very nicely as a utility
 //
+//	SHRT_MAX is actually defined by GCC as an int not a short. A work around is
+//	in development
+//
 //
 //
 

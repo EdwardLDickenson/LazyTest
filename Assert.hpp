@@ -46,6 +46,7 @@ public:
 	void isFalse();
 	void isZero();
 	void isOne();
+	void isMax();
 
 	bool passed();
 	bool failed();
@@ -129,6 +130,13 @@ template<class T>
 void Assert<T>::isOne()
 {
 	compareType = Comparator::isOne;
+	canCompare = true;
+}
+
+template<class T>
+void Assert<T>::isMax()
+{
+	compareType = Comparator::isMax;
 	canCompare = true;
 }
 
@@ -224,6 +232,17 @@ bool Assert<T>::getResult()
 			catch(...)
 			{
 				throw 20;
+			}
+		}break;
+		case Comparator::isMax:
+		{
+			try
+			{
+				return a == b;
+			}
+			catch(...)
+			{
+				throw 21;
 			}
 		}break;
 
