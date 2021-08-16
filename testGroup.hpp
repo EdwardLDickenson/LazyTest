@@ -375,14 +375,13 @@ void TestGroup::isOne(T x, string message)
 
 void TestGroup::isMax(short x, string message)
 {
+	cout << "This gets called" << endl;
 	if(message.length() == 0)
 	{
 		message = defaultMessage;
 	}
 
-	short shortMax = SHRT_MAX;
-
-	Assert<short> comparison(message, x, shortMax);
+	Assert<short> comparison(message, x, numeric_limits<short>::max());
 	comparison.isMax();
 	addAssertion<short>(comparison);
 }
@@ -394,9 +393,7 @@ void TestGroup::isMax(unsigned short x, string message)
 		message = defaultMessage;
 	}
 
-	unsigned short ushortMax = USHRT_MAX;
-
-	Assert<unsigned short> comparison(message, x, ushortMax);
+	Assert<unsigned short> comparison(message, x, numeric_limits<unsigned short>::max());
 	comparison.isMax();
 	addAssertion<unsigned short>(comparison);
 }
@@ -408,7 +405,7 @@ void TestGroup::isMax(int x, string message)
 		message = defaultMessage;
 	}
 
-	Assert<int> comparison(message, x, INT_MAX);
+	Assert<int> comparison(message, x, numeric_limits<int>::max());
 	comparison.isMax();
 	addAssertion(comparison);
 }
@@ -420,7 +417,7 @@ void TestGroup::isMax(unsigned int x, string message)
 		message = defaultMessage;
 	}
 
-	Assert<unsigned int> comparison(message, x, UINT_MAX);
+	Assert<unsigned int> comparison(message, x, numeric_limits<unsigned int>::max());
 	comparison.isMax();
 	addAssertion(comparison);
 }
@@ -432,7 +429,7 @@ void TestGroup::isMax(long x, string message)
 		message = defaultMessage;
 	}
 
-	Assert<long> comparison(message, x, LONG_MAX);
+	Assert<long> comparison(message, x, numeric_limits<long>::max());
 	comparison.isMax();
 	addAssertion(comparison);
 }
@@ -444,7 +441,7 @@ void TestGroup::isMax(unsigned long x, string message)
 		message = defaultMessage;
 	}
 
-	Assert<unsigned long> comparison(message, x, ULONG_MAX);
+	Assert<unsigned long> comparison(message, x, numeric_limits<unsigned long>::max());
 	comparison.isMax();
 	addAssertion(comparison);
 }
@@ -456,7 +453,7 @@ void TestGroup::isMax(float x, string message)
 		message = defaultMessage;
 	}
 
-	Assert<float> comparison(message, x, FLT_MAX);
+	Assert<float> comparison(message, x, numeric_limits<float>::max());
 	comparison.isMax();
 	addAssertion(comparison);
 }
@@ -468,7 +465,7 @@ void TestGroup::isMax(double x, string message)
 		message = defaultMessage;
 	}
 
-	Assert<double> comparison(message, x, DBL_MAX);
+	Assert<double> comparison(message, x, numeric_limits<double>::max());
 	comparison.isMax();
 	addAssertion(comparison);
 }

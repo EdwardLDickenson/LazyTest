@@ -9,7 +9,7 @@
 #include <vector>
 #include <functional>
 #include <time.h>
-#include <limits.h>
+#include <limits>
 #include <cfloat>
 #include <sstream>
 #include <stdlib.h>
