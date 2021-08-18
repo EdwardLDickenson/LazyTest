@@ -245,6 +245,17 @@ bool Assert<T>::getResult()
 				throw 21;
 			}
 		}break;
+		case Comparator::isMin:
+		{
+			try
+			{
+				return a == b;
+			}
+			catch(...)
+			{
+				throw 22;
+			}
+		}break;
 
 		default:
 		{
@@ -279,6 +290,7 @@ bool Assert<bool>::getResult()
 			{
 				throw 19;
 			}break;
+
 		default:
 		{
 			errmsg = "LazyTest type conversion failed";

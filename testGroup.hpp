@@ -54,6 +54,14 @@ public:
 	void isMax(unsigned long x, string message = "");
 	void isMax(float x, string message = "");
 	void isMax(double x, string message = "");
+	void isMin(short x, string message = "");
+	void isMin(unsigned short x, string message = "");
+	void isMin(int x, string message = "");
+	void isMin(unsigned int x, string message = "");
+	void isMin(long x, string message = "");
+	void isMin(unsigned long x, string message = "");
+	void isMin(float x, string message = "");
+	void isMin(double x, string message = "");
 
 	bool passed();
 	bool failed();

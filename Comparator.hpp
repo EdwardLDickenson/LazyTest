@@ -10,6 +10,7 @@ enum Comparator {
 	isZero,
 	isOne,
 	isMax,
+	isMin,
 
 	//	Binary operators
 	equal,
@@ -60,6 +61,9 @@ string getComparatorString(Comparator compareType)
 		break;
 		case Comparator::isMax:
 			return " is Max ";
+		break;
+		case Comparator::isMin:
+			return " is Min ";
 		break;
 	}
 
